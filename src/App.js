@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import UserForm from './components/UserForm'
-import ImageForm from './components/ImageForm'
+import lecture from './lecture.png';
+import Nav from './components/Nav'
+import SignUp from './components/SignUp'
 import RenderImage from './components/RenderImage'
 import imageService from './services/images.js'
+import { Container, Image } from 'semantic-ui-react'
 
 class App extends Component {
 
@@ -18,21 +18,20 @@ class App extends Component {
   }
 
   render() {
+    const ImageExampleFluid = () => <Image src={lecture} fluid />
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <Container className="App">
+      <Nav />
+          {ImageExampleFluid()}
           <h2>Welcome to Joy of Learning</h2>
-        </div>
-        <div className="App-intro">
-          <ImageForm />
-          <hr />
-          <UserForm />
+        <Container>
+          <SignUp />
           <RenderImage
             images={this.state.images}
           />
-        </div>
-      </div>
+        </Container>
+      </Container>
     )
   }
 }

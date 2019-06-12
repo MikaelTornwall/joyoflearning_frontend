@@ -1,6 +1,6 @@
 import React from 'react'
 import userService from '../services/users.js'
-
+import { Form, Button } from 'semantic-ui-react'
 class UserForm extends React.Component {
 
   state = {
@@ -29,15 +29,33 @@ class UserForm extends React.Component {
 
     render() {
       return (
-        <form onSubmit={this.submit}>
-          First name: <input type="text" name="firstname" value={this.state.firstname} onChange={this.handleChange} />
-          Lastname: <input type="text" name="lastname" value={this.state.lastname} onChange={this.handleChange} />
-          Email: <input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
-          Username: <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
-          Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-          Organization: <input type="text" name="organization" value={this.state.organization} onChange={this.handleChange} />
-          <button type="submit">Submit</button>
-        </form>
+        <Form onSubmit={this.submit}>
+          <Form.Field>
+            <label>First name:</label>
+            <input type="text" name="firstname" value={this.state.firstname} onChange={this.handleChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Lastname:</label>
+            <input type="text" name="lastname" value={this.state.lastname} onChange={this.handleChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Email:</label>
+            <input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Username:</label>
+            <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Password:</label>
+            <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Organization:</label>
+            <input type="text" name="organization" value={this.state.organization} onChange={this.handleChange} />
+          </Form.Field>
+          <Button type="submit">Submit</Button>
+        </Form>
       )
     }
 }

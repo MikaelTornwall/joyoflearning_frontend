@@ -8,7 +8,7 @@ class RenderImage extends React.Component {
         {console.log(this.props.images)}
         <p>Images</p>
         {this.props.images.map(data => (
-          <img src={data.image.path} width="400" height="auto" />
+          <img key={data._id} src={data.image.path} width="400" height="auto" alt="From the database" />
         ))}
       </div>
     )

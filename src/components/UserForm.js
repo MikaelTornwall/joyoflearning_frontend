@@ -30,6 +30,7 @@ class UserForm extends React.Component {
     render() {
       return (
         <Form onSubmit={this.submit}>
+        <Form.Group widths="equal">
           <Form.Field>
             <label>First name:</label>
             <input type="text" name="firstname" value={this.state.firstname} onChange={this.handleChange} />
@@ -38,10 +39,18 @@ class UserForm extends React.Component {
             <label>Lastname:</label>
             <input type="text" name="lastname" value={this.state.lastname} onChange={this.handleChange} />
           </Form.Field>
+          </Form.Group>
+          <Form.Group widths="equal">
           <Form.Field>
             <label>Email:</label>
             <input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
           </Form.Field>
+          <Form.Field>
+            <label>Organization:</label>
+            <input type="text" name="organization" value={this.state.organization} onChange={this.handleChange} />
+          </Form.Field>
+          </Form.Group>
+          <Form.Group widths="equal">
           <Form.Field>
             <label>Username:</label>
             <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
@@ -50,10 +59,7 @@ class UserForm extends React.Component {
             <label>Password:</label>
             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
           </Form.Field>
-          <Form.Field>
-            <label>Organization:</label>
-            <input type="text" name="organization" value={this.state.organization} onChange={this.handleChange} />
-          </Form.Field>
+          </Form.Group>
           <Button type="submit">Submit</Button>
         </Form>
       )

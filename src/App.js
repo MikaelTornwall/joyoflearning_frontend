@@ -14,7 +14,9 @@ class App extends Component {
   state = {
     loggedIn: false,
     images: [],
-    page: "home"
+    page: "home",
+    username: "",
+    password: ""
   }
 
   componentDidMount = async () => {
@@ -22,9 +24,9 @@ class App extends Component {
     this.setState({ images: images })
   }
 
-  navigate = (event) => {
-    console.log("HIT")
-    this.setState({ page: event.target.id })
+  login = (event) => {
+    event.preventDefault()
+    console.log("Logging in with username ",  this.state.username, " and password ", this.state.password)
   }
 
   render() {
@@ -43,12 +45,20 @@ class App extends Component {
     return (
       <Container className="App">
         <Router>
-          <Nav onClick={this.navigate} />
+          <Nav onClick={(event) => this.setState({ page: event.target.id })} />
           {ImageExampleFluid()}
           <h2>Welcome to Joy of Learning</h2>
           <Route exact path="/" render={() => <Dump />} />
           <Route path="/signup" render={() => <SignUp />} />
-          <Route path="/login" render={() => <LogIn />} />
+          <Route path="/login" render={() =>
+            <LogIn
+              username={this.state.username}
+              password={this.state.password}
+              onChange={(event) => this.setState({ [event.target.name]: event.target.value })}
+              onSubmit={this.login}
+             />
+           }
+            />
         </Router>
       </Container>
     )

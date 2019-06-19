@@ -10,7 +10,10 @@
     "react-scripts": "0.9.x",
     "semantic-ui-react": "^0.87.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

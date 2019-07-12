@@ -1,9 +1,10 @@
 import React from 'react'
-import { Container, Form, Button } from 'semantic-ui-react'
+import { Container, Form, Button, Label, Header } from 'semantic-ui-react'
 
 const Login = ({ errorMessage, username, password, setUsername, setPassword, onSubmit}) => (
       <Container>
-      <div>{errorMessage}</div>
+        <Header as='h1'>Log in</Header>
+        {errorMessage !== null && <Label basic color="red">{errorMessage}</Label>}
         <Form onSubmit={onSubmit}>
           <Form.Field inline>
             <label>Username</label>
@@ -13,7 +14,7 @@ const Login = ({ errorMessage, username, password, setUsername, setPassword, onS
             <label>Password</label>
             <input type="password" name="password" value={password} onChange={setPassword} />
           </Form.Field>
-          <Button type="submit" color="red">Log In</Button>
+          <Button type="submit" color="green">Log In</Button>
         </Form>
       </Container>
 )

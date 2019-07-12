@@ -1,15 +1,16 @@
 import React from 'react'
 import userService from '../services/users.js'
 import { Form, Button } from 'semantic-ui-react'
+
 class UserForm extends React.Component {
 
   state = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    username: "",
-    password: "",
-    organization: "",
+    firstname: '',
+    lastname: '',
+    email: '',
+    username: '',
+    password: '',
+    organization: '',
     logo: null
   }
 
@@ -95,7 +96,7 @@ class UserForm extends React.Component {
             <div onClick={() => this.fileInput.click()}>Select file</div>
             </Form.Field>
           </Form.Group>
-          <Button style={{marginTop: "10px"}} type="submit">Submit</Button>
+          <Button style={{marginTop: "10px"}} type="submit" color="green">Submit</Button>
         </Form>
       )
     }

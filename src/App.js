@@ -7,7 +7,7 @@ import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
 import imageService from './services/images.js'
 import loginService from './services/login.js'
-import { Container, Image } from 'semantic-ui-react'
+import { Container, Image, Header } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(error) {
-      //console.log(error)
+      console.log(error)
       setErrorMessage('Incorrect username or password')
       setTimeout(() => {
         setErrorMessage(null)
@@ -50,6 +50,15 @@ const App = () => {
   }
 
     const ImageExampleFluid = () => <Image src={lecture} fluid />
+
+    const Home = () => (
+      <Container>
+        <Header as='h1'>Welcome to Joy of Learning</Header>
+        <RenderImage
+          images={images}
+        />
+      </Container>
+    )
 
     const Dump = () => (
       <Container>
@@ -68,9 +77,8 @@ const App = () => {
             user={user}
             onClick={({target}) => setPage(target.id)}
             />
-          {ImageExampleFluid()}
-          <h2>Welcome to Joy of Learning</h2>
-          <Route exact path="/" render={() => <Dump />} />
+          {/*<ImageExampleFluid />*/}
+          <Route exact path="/" render={() => <Home />} />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/login" render={() =>
             !user && <LogIn

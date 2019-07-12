@@ -9,7 +9,8 @@ class UserForm extends React.Component {
     email: "",
     username: "",
     password: "",
-    organization: ""
+    organization: "",
+    logo: null
   }
 
   handleChange = (event) => {
@@ -20,11 +21,32 @@ class UserForm extends React.Component {
   submit = async (event) => {
     event.preventDefault()
 
-    const data = this.state
+    const formData = new FormData()
 
-    console.log(data)
+    await formData.append('firstname', this.state.firstname)
+    await formData.append('lastname', this.state.lastname)
+    await formData.append('email', this.state.email)
+    await formData.append('username', this.state.username)
+    await formData.append('password', this.state.password)
+    await formData.append('organization', this.state.organization)
+    await formData.append('logo', this.state.logo)
 
-    userService.create(data)
+    await userService.create(formData)
+
+    this.setState({
+      firstname: "",
+      lastname: "",
+      email: "",
+      username: "",
+      password: "",
+      organization: "",
+      logo: null
+    })
+  }
+
+  fileHandler = async (event) => {
+    console.log(event.target.files[0])
+    await this.setState({ logo: event.target.files[0] })
   }
 
     render() {
@@ -60,7 +82,20 @@ class UserForm extends React.Component {
             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
           </Form.Field>
           </Form.Group>
-          <Button type="submit">Submit</Button>
+          <Form.Group>
+            <Form.Field>
+              <input
+                style={{display: 'none'}}
+                type="file"
+                encType="multipart/form-data"
+                name="image"
+                onChange={this.fileHandler}
+                ref={fileInput => this.fileInput = fileInput}
+              />
+            <div onClick={() => this.fileInput.click()}>Select file</div>
+            </Form.Field>
+          </Form.Group>
+          <Button style={{marginTop: "10px"}} type="submit">Submit</Button>
         </Form>
       )
     }

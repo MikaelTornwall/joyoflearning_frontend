@@ -3,7 +3,7 @@ import { Container } from 'semantic-ui-react'
 import UserForm from './UserForm'
 
 class SignUp extends React.Component {
-  render() {
+    render() {
     return (
       <Container>
         <UserForm />

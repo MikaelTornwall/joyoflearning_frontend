@@ -20,13 +20,13 @@ class ImageForm extends React.Component {
   }
 
     render() {
-    return (
+      return (
         <div>
           <input
             style={{display: 'none'}}
             type="file"
             encType="multipart/form-data"
-            name="image"
+            name="logo"
             onChange={this.fileHandler}
             ref={fileInput => this.fileInput = fileInput}
           />

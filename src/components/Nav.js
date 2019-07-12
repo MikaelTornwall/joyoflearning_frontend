@@ -2,46 +2,62 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
-class Nav extends React.Component {
-
-
-
-  render() {
-
-    const notLoggedNav = () => (
+const Nav = ({ user, onClick }) => {
+  const notLoggedNav = () => (
       <Menu secondary>
         <Menu.Item
           as={Link} to="/"
           id="home"
           name="home"
-          onClick={this.props.onClick} />
+          onClick={onClick} />
         <Menu.Item
           as={Link} to="/signup"
           id="signup"
           name="sign up"
-          onClick={this.props.onClick}
+          onClick={onClick}
         />
         <Menu.Item
           as={Link} to="/login"
           id="login"
           name="log in"
-          onClick={this.props.onClick}
+          onClick={onClick}
         />
       </Menu>
     )
 
     const loggedNav = () => (
       <Menu secondary>
-        <Menu.Item name="home" onClick={this.props.onClick}>Home</Menu.Item>
-        <Menu.Item name="profile" onClick={this.props.onClick}>Profile</Menu.Item>
-        <Menu.Item name="mycourses" onClick={this.props.onClick}>My Courses</Menu.Item>
-        <Menu.Item name="newcourse" onClick={this.props.onClick}>New Course</Menu.Item>
-        <Menu.Item name="settings" onClick={this.props.onClick}>Settings</Menu.Item>
+        <Menu.Item
+          as={Link} to="/"
+          id="home"
+          name="home"
+          onClick={onClick} />
+        <Menu.Item
+          as={Link} to="/profile"
+          id="profile"
+          name="profile"
+          onClick={onClick} />
+        <Menu.Item
+          as={Link} to="/mycourses"
+          id="mycourses"
+          name="my courses"
+          onClick={onClick} />
+        <Menu.Item
+          as={Link} to="/newcourse"
+          id="newcourse"
+          name="new course"
+          onClick={onClick} />
+        <Menu.Item
+          as={Link} to="/settings"
+          id="settings"
+          name="settings"
+          onClick={onClick} />
       </Menu>
     )
 
-    return notLoggedNav()
-  }
+    const renderNav = () => user === null ? notLoggedNav() : loggedNav()
+
+    return renderNav()
 }
 
 export default Nav

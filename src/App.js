@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import lecture from './lecture.png';
 import Nav from './components/Nav'
 import SignUp from './components/SignUp'
@@ -6,38 +6,57 @@ import LogIn from './components/LogIn'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
 import imageService from './services/images.js'
+import loginService from './services/login.js'
 import { Container, Image } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
-class App extends Component {
+const App = () => {
 
-  state = {
-    loggedIn: false,
-    images: [],
-    page: "home",
-    username: "",
-    password: ""
-  }
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [images, setImages] = useState([])
+  const [page, setPage] = useState('home')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  componentDidMount = async () => {
-    const images = await imageService.getAll()
-    this.setState({ images: images })
-  }
+  useEffect(() => {
+    const getImages = async () => {
+      const images = await imageService.getAll()
+      setImages(images)
+    }
+    getImages()
+  }, [])
 
-  login = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
-    console.log("Logging in with username ",  this.state.username, " and password ", this.state.password)
+    console.log("Logging in with username ",  username, " and password ", password)
+
+    try {
+      const user = await loginService.login({
+        username, password
+      })
+
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch(error) {
+      //console.log(error)
+      setErrorMessage('Incorrect username or password')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
-  render() {
     const ImageExampleFluid = () => <Image src={lecture} fluid />
 
     const Dump = () => (
       <Container>
-        <ImageForm />
+        {user !== null && <ImageForm />}
         <SignUp />
         <RenderImage
-          images={this.state.images}
+          images={images}
         />
       </Container>
     )
@@ -45,24 +64,27 @@ class App extends Component {
     return (
       <Container className="App">
         <Router>
-          <Nav onClick={(event) => this.setState({ page: event.target.id })} />
+          <Nav
+            user={user}
+            onClick={({target}) => setPage(target.id)}
+            />
           {ImageExampleFluid()}
           <h2>Welcome to Joy of Learning</h2>
           <Route exact path="/" render={() => <Dump />} />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/login" render={() =>
-            <LogIn
-              username={this.state.username}
-              password={this.state.password}
-              onChange={(event) => this.setState({ [event.target.name]: event.target.value })}
-              onSubmit={this.login}
+            !user && <LogIn
+              errorMessage={errorMessage}
+              username={username}
+              password={password}
+              setUsername={({target}) => setUsername(target.value)}
+              setPassword={({target}) => setPassword(target.value)}
+              onSubmit={handleLogin}
              />
-           }
-            />
+          } />
         </Router>
       </Container>
     )
-  }
 }
 
 export default App

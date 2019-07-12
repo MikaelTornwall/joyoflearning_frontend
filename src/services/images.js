@@ -8,7 +8,7 @@ const getAll = async () => {
 }
 
 const create = async (imageObject) => {
-  const res = await axios.post(baseUrl, imageObject, {
+    const res = await axios.post(baseUrl, imageObject, {
     onUploadProgress: progressEvent => {
       console.log('Upload progress: ' + (100 * progressEvent.loaded / progressEvent.total) + "%")
     }

@@ -5,6 +5,7 @@ import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
+import userService from './services/users.js'
 import imageService from './services/images.js'
 import loginService from './services/login.js'
 import { Container, Image, Header } from 'semantic-ui-react'
@@ -15,8 +16,13 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false)
   const [images, setImages] = useState([])
   const [page, setPage] = useState('home')
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [organization, setOrganization] = useState('')
+  const [logo, setLogo] = useState(null)
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -28,6 +34,16 @@ const App = () => {
     getImages()
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      loginService.setToken(user.token)
+    }
+  }, [])
+
+  // Login/logout functions
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log("Logging in with username ",  username, " and password ", password)
@@ -37,6 +53,9 @@ const App = () => {
         username, password
       })
 
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
+
+      loginService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -49,50 +68,82 @@ const App = () => {
     }
   }
 
-    const ImageExampleFluid = () => <Image src={lecture} fluid />
+  const handleLogout = () => {
+    setUser(null)
+    window.localStorage.removeItem('loggedUser')
+  }
 
-    const Home = () => (
-      <Container>
-        <Header as='h1'>Welcome to Joy of Learning</Header>
-        <RenderImage
-          images={images}
+  // Signup functions
+  const submit = async (event) => {
+    event.preventDefault()
+
+    const formData = new FormData()
+    await formData.append('firstname', firstname)
+    await formData.append('lastname', lastname)
+    await formData.append('email', email)
+    await formData.append('username', username)
+    await formData.append('password', password)
+    await formData.append('organization', organization)
+    await formData.append('logo', logo)
+
+    await userService.create(formData)
+
+    setFirstname('')
+    setLastname('')
+    setEmail('')
+    setUsername('')
+    setPassword('')
+    setOrganization('')
+    setLogo(null)
+  }
+
+  const ImageExampleFluid = () => <Image src={lecture} fluid />
+
+  const Home = () => (
+    <Container>
+      <Header as='h1'>Welcome to Joy of Learning</Header>
+      <RenderImage
+        images={images}
+      />
+    </Container>
+  )
+
+  return (
+    <Container className="App">
+      <Router>
+        <Nav
+          user={user}
+          onClick={({target}) => setPage(target.id)}
+          handleLogout={handleLogout}
         />
-      </Container>
-    )
-
-    const Dump = () => (
-      <Container>
-        {user !== null && <ImageForm />}
-        <SignUp />
-        <RenderImage
-          images={images}
-        />
-      </Container>
-    )
-
-    return (
-      <Container className="App">
-        <Router>
-          <Nav
-            user={user}
-            onClick={({target}) => setPage(target.id)}
-            />
-          {/*<ImageExampleFluid />*/}
-          <Route exact path="/" render={() => <Home />} />
-          <Route path="/signup" render={() => <SignUp />} />
-          <Route path="/login" render={() =>
-            !user && <LogIn
-              errorMessage={errorMessage}
-              username={username}
-              password={password}
-              setUsername={({target}) => setUsername(target.value)}
-              setPassword={({target}) => setPassword(target.value)}
-              onSubmit={handleLogin}
-             />
-          } />
-        </Router>
-      </Container>
-    )
+        <Route exact path="/" render={() => <Home />} />
+        <Route path="/signup" render={() =>
+          <SignUp
+            submit={submit}
+            firstname={[firstname, ({target}) => setFirstname(target.value)]}
+            lastname={[lastname, ({target}) => setLastname(target.value)]}
+            email={[email, ({target}) => setEmail(target.value)]}
+            username={[username, ({target}) => setUsername(target.value)]}
+            password={[password, ({target}) => setPassword(target.value)]}
+            organization={[organization, ({target}) => setOrganization(target.value)]}
+            logo={[logo, ({target}) => setLogo(target.files[0])]}
+          />
+        } />
+        <Route path="/login" render={() =>
+          user
+          ? <Redirect to="/" />
+          : <LogIn
+            errorMessage={errorMessage}
+            username={username}
+            password={password}
+            setUsername={({target}) => setUsername(target.value)}
+            setPassword={({target}) => setPassword(target.value)}
+            onSubmit={handleLogin}
+           />
+        } />
+      </Router>
+    </Container>
+  )
 }
 
 export default App

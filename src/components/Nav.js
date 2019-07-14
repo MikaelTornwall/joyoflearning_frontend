@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
-const Nav = ({ user, onClick }) => {
+const Nav = ({ user, onClick, handleLogout }) => {
   const notLoggedNav = () => (
       <Menu secondary>
         <Menu.Item
@@ -52,6 +52,11 @@ const Nav = ({ user, onClick }) => {
           id="settings"
           name="settings"
           onClick={onClick} />
+        <Menu.Item
+          as={Link} to="/login"
+          id="logout"
+          name="logout"
+          onClick={handleLogout} />
       </Menu>
     )
 

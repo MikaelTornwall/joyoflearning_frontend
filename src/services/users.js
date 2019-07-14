@@ -7,9 +7,14 @@ const getAll = async () => {
     return res.data
 }
 
-const create = async (userObject) => {    
+const getUser = async (id) => {
+  const res = await axios.get(`${baseUrl}/${id}`)  
+  return res.data
+}
+
+const create = async (userObject) => {
     const res = await axios.post(baseUrl, userObject)
     return res.data
 }
 
-export default { getAll, create }
+export default { getAll, getUser, create }

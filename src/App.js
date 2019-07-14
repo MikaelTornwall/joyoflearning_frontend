@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import lecture from './lecture.png';
+
+// Components
 import Nav from './components/Nav'
 import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
+import Profile from './components/Profile'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
+
+// Services
 import userService from './services/users.js'
 import imageService from './services/images.js'
 import loginService from './services/login.js'
+
+// Styles
 import { Container, Image, Header } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
@@ -24,6 +31,7 @@ const App = () => {
   const [organization, setOrganization] = useState('')
   const [logo, setLogo] = useState(null)
   const [user, setUser] = useState(null)
+  const [profile, setProfile] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
@@ -40,6 +48,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       loginService.setToken(user.token)
+      getProfile(user.id)
     }
   }, [])
 
@@ -60,7 +69,6 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch(error) {
-      console.log(error)
       setErrorMessage('Incorrect username or password')
       setTimeout(() => {
         setErrorMessage(null)
@@ -97,10 +105,15 @@ const App = () => {
     setLogo(null)
   }
 
-  const ImageExampleFluid = () => <Image src={lecture} fluid />
+  // Profile services
+  const getProfile = async (id) => {
+    const profile = await userService.getUser(id)
+    setProfile(profile)
+  }
 
   const Home = () => (
     <Container>
+      <Image src={lecture} fluid />
       <Header as='h1'>Welcome to Joy of Learning</Header>
       <RenderImage
         images={images}
@@ -140,6 +153,11 @@ const App = () => {
             setPassword={({target}) => setPassword(target.value)}
             onSubmit={handleLogin}
            />
+        } />
+        <Route path="/profile" render={() =>
+          <Profile
+            profile={profile}
+          />
         } />
       </Router>
     </Container>

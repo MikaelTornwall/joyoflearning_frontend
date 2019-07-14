@@ -50,6 +50,7 @@ const SignUp = ({ submit, firstname, lastname, email, username, password, organi
               ref={ref}
             />
             <div onClick={() => ref.current.click()}>Select file</div>
+            <span>{logo[0] && logo[0].name}</span>
           </Form.Field>
         </Form.Group>
         <Button style={{marginTop: "10px"}} type="submit" color="green">Submit</Button>
@@ -57,4 +58,5 @@ const SignUp = ({ submit, firstname, lastname, email, username, password, organi
     </Container>
   )
 }
+
 export default SignUp

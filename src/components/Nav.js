@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 const Nav = ({ user, onClick, handleLogout }) => {
-  const notLoggedNav = () => (
+  const NotLoggedNav = () => (
       <Menu secondary>
         <Menu.Item
           as={Link} to="/"
@@ -25,7 +25,7 @@ const Nav = ({ user, onClick, handleLogout }) => {
       </Menu>
     )
 
-    const loggedNav = () => (
+    const LoggedNav = () => (
       <Menu secondary>
         <Menu.Item
           as={Link} to="/"
@@ -60,9 +60,7 @@ const Nav = ({ user, onClick, handleLogout }) => {
       </Menu>
     )
 
-    const renderNav = () => user === null ? notLoggedNav() : loggedNav()
-
-    return renderNav()
+    return user === null ? <NotLoggedNav /> : <LoggedNav />
 }
 
 export default Nav

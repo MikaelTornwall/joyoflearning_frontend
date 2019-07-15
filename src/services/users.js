@@ -1,4 +1,5 @@
 import axios from 'axios'
+import imageService from './images.js'
 
 const baseUrl = 'http://localhost:3001/api/users'
 
@@ -8,7 +9,13 @@ const getAll = async () => {
 }
 
 const getUser = async (id) => {
-  const res = await axios.get(`${baseUrl}/${id}`)  
+  const res = await axios.get(`${baseUrl}/${id}`)
+
+  if (res.data.logo) {
+    const logo = await imageService.getOne(res.data.logo)
+    res.data.logo = logo
+  }
+
   return res.data
 }
 

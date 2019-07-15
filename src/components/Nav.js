@@ -43,7 +43,7 @@ const Nav = ({ user, onClick, handleLogout }) => {
           name="my courses"
           onClick={onClick} />
         <Menu.Item
-          as={Link} to="/newcourse"
+          as={Link} to="/createcourse"
           id="newcourse"
           name="new course"
           onClick={onClick} />

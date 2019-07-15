@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import lecture from './lecture.png';
+import { createBrowserHistory } from 'history'
 
 // Components
 import Nav from './components/Nav'
 import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
 import Profile from './components/Profile'
+import CreateCourse from './components/CreateCourse'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
 
@@ -17,6 +19,8 @@ import loginService from './services/login.js'
 // Styles
 import { Container, Image, Header } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+
+const history = createBrowserHistory()
 
 const App = () => {
 
@@ -43,13 +47,17 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      loginService.setToken(user.token)
-      getProfile(user.id)
+    const profileData = async () => {
+      const loggedUserJSON = window.localStorage.getItem('loggedUser')
+      if (loggedUserJSON) {
+        const user = JSON.parse(loggedUserJSON)
+        setUser(user)
+        loginService.setToken(user.token)
+        await getProfile(user.id)
+        console.log("!!!!!")
+      }
     }
+    profileData()
   }, [])
 
   // Login/logout functions
@@ -107,7 +115,7 @@ const App = () => {
 
   // Profile services
   const getProfile = async (id) => {
-    const profile = await userService.getUser(id)
+    const profile = await userService.getUser(id)    
     setProfile(profile)
   }
 
@@ -123,7 +131,7 @@ const App = () => {
 
   return (
     <Container className="App">
-      <Router>
+      <Router history={history}>
         <Nav
           user={user}
           onClick={({target}) => setPage(target.id)}
@@ -131,7 +139,9 @@ const App = () => {
         />
         <Route exact path="/" render={() => <Home />} />
         <Route path="/signup" render={() =>
-          <SignUp
+          user
+          ? <Redirect to="/" />
+          : <SignUp
             submit={submit}
             firstname={[firstname, ({target}) => setFirstname(target.value)]}
             lastname={[lastname, ({target}) => setLastname(target.value)]}
@@ -157,6 +167,11 @@ const App = () => {
         <Route path="/profile" render={() =>
           <Profile
             profile={profile}
+            logo={logo}
+          />
+        } />
+        <Route path="/createcourse" render={() =>
+          <CreateCourse
           />
         } />
       </Router>

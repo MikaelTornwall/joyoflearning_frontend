@@ -7,6 +7,11 @@ const getAll = async () => {
   return res.data
 }
 
+const getOne = async (id) => {  
+  const res = await axios.get(`${baseUrl}/${id}`)
+  return res.data
+}
+
 const create = async (imageObject) => {
     const res = await axios.post(baseUrl, imageObject, {
     onUploadProgress: progressEvent => {
@@ -17,4 +22,4 @@ const create = async (imageObject) => {
   return res.data
 }
 
-export default { getAll, create }
+export default { getAll, getOne, create }

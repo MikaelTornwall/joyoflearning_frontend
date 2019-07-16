@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import lecture from './lecture.png';
 import { createBrowserHistory } from 'history'
 
@@ -115,7 +115,7 @@ const App = () => {
 
   // Profile services
   const getProfile = async (id) => {
-    const profile = await userService.getUser(id)    
+    const profile = await userService.getUser(id)
     setProfile(profile)
   }
 

@@ -1,10 +1,12 @@
 import React, { useLayoutEffect, useState, useRef } from 'react'
 import BlockStyleControls from './BlockStyleControls'
 import InlineStyleControls from './InlineStyleControls'
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js'
+import MediaControls from './MediaControls'
+import { Editor, EditorState, RichUtils, AtomicBlockUtils, convertToRaw, convertFromRaw } from 'draft-js'
 import { Button } from 'semantic-ui-react'
 import Helper from './utils/editorHelper'
-import 'draft-js/dist/Draft.css';
+import { mediaBlockRenderer } from "./entities/mediaBlockRenderer"
+import 'draft-js/dist/Draft.css'
 
 const CourseEditor = () => {
 
@@ -30,12 +32,26 @@ const CourseEditor = () => {
     saveEditorData()
   }
 
-  const setLastDraft = () => {
-    const data = getEditorData()
-    if (data) {
-      const contentState = convertFromRaw(data)
-      setEditorState()
-    }
+  const onAddImage = (event) => {
+    const urlValue = window.prompt('Paste image link')
+    const contentState = editorState.getCurrentContent()
+    const contentStateWithEntity = contentState.createEntity(
+      'image',
+      'IMMUTABLE',
+      { src: urlValue }
+    )
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+    const newEditorState = EditorState.set(
+      editorState,
+      { currentContent: contentStateWithEntity },
+      'create-entity'
+    )
+    setEditorState(AtomicBlockUtils.insertAtomicBlock(
+      newEditorState,
+      entityKey,
+      ' '
+    ))
+    setTimeout(() => refContainer.focus(), 0);
   }
 
   const logState = () => console.log(editorState.toJS())
@@ -73,6 +89,8 @@ const CourseEditor = () => {
   return (
     <div>
       <div className="RichEditor-root">
+      <button onClick={onAddImage}>Image</button>
+      <MediaControls onClick={onAddImage} />
       <BlockStyleControls
         editorState={editorState}
         onToggle={toggleBlockType}
@@ -83,7 +101,8 @@ const CourseEditor = () => {
       />
       <div className={className} onClick={focus()}>
       <Editor
-        blockStyleFunction={Helper.getBlockStyle}
+        blockRendererFn={mediaBlockRenderer}
+        blockStyleFn={Helper.getBlockStyle}
         handleKeyCommand={handleKeyCommand}
         editorState={editorState}
         onChange={onChange}
@@ -96,7 +115,6 @@ const CourseEditor = () => {
       </div>
       <Button onClick={logState}>Log state</Button>
       <Button onClick={saveEditorData}>Save</Button>
-      <Button onClick={setLastDraft}>Return</Button>
     </div>
   )
 }

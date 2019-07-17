@@ -32,11 +32,13 @@ const CourseEditor = () => {
     saveEditorData()
   }
 
-  const onAddImage = (event) => {
-    const urlValue = window.prompt('Paste image link')
+  const addMedia = (type) => {
+    const urlValue = window.prompt(`Paste ${type} link:`)
+    console.log(urlValue)
+    if (urlValue === '' || urlValue === null) return
     const contentState = editorState.getCurrentContent()
     const contentStateWithEntity = contentState.createEntity(
-      'image',
+      type,
       'IMMUTABLE',
       { src: urlValue }
     )
@@ -51,7 +53,7 @@ const CourseEditor = () => {
       entityKey,
       ' '
     ))
-    setTimeout(() => refContainer.focus(), 0);
+    setTimeout(() => refContainer.current.focus(), 0);
   }
 
   const logState = () => console.log(editorState.toJS())
@@ -89,8 +91,9 @@ const CourseEditor = () => {
   return (
     <div>
       <div className="RichEditor-root">
-      <button onClick={onAddImage}>Image</button>
-      <MediaControls onClick={onAddImage} />
+      <MediaControls
+        onClick={addMedia}
+      />
       <BlockStyleControls
         editorState={editorState}
         onToggle={toggleBlockType}

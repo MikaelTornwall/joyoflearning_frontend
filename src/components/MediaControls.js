@@ -5,12 +5,16 @@ import './styles/RichEditor.css'
 
 const MediaControls = ({ editorState, onClick }) => {
 
+  const onButtonClick = (event, type) => {
+    event.preventDefault()
+    onClick(type.label)
+  }
+
   return (
     <div className="RichEditor-controls">
-      <StyleButton
-        label="Image"
-        onToggle={onClick}
-      />
+      {TYPES.MEDIA_TYPES.map(type =>
+        <span key={type.label} className='RichEditor-styleButton' onClick={(event) => onButtonClick(event, type)}>{type.symbol}</span>
+      )}
     </div>
   )
 }

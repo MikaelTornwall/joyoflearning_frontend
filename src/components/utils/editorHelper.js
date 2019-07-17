@@ -1,3 +1,5 @@
+import React from 'react'
+
 const BLOCK_TYPES = [
   {label: 'H1', style: 'header-one'},
   {label: 'H2', style: 'header-two'},
@@ -18,9 +20,15 @@ const INLINE_STYLES = [
   {label: 'Monospace', style: 'CODE'}
 ]
 
+const MEDIA_TYPES = [
+  {label: 'image', symbol: <i className="far fa-image"></i>},
+  {label: 'video', symbol: <i className="fas fa-video"></i>},
+  {label: 'audio', symbol: <i className="fas fa-volume-up"></i>}
+]
+
 const getBlockStyle = (block) => {
   if (block.getType() === 'blockquote') return 'RichEditor-blockquote'
   return null
 }
 
-export default { BLOCK_TYPES, INLINE_STYLES, getBlockStyle }
+export default { BLOCK_TYPES, INLINE_STYLES, MEDIA_TYPES, getBlockStyle }

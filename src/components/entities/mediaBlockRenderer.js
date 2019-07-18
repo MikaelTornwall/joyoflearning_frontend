@@ -21,6 +21,26 @@ const Image = (props) => {
   return null
 }
 
+const Video = (props) => {
+  if (!!props.src) {
+    let src = props.src
+
+    if (src.includes('watch?v=')) {
+        src = src.replace('watch?v=', 'embed/')
+    } else if (src.includes('youtu.be')) {
+        src = src.replace('youtu.be', 'youtube.com/embed/')
+    }
+
+    return <iframe width="806" height="453" src={src} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  }
+}
+
+const Audio = (props) => {
+  if (!!props.src) {
+    return <audio controls src={props.src} />
+  }
+}
+
 const Media = (props) => {
   console.log('Media props: ',  props)
   const entity = props.contentState.getEntity(props.block.getEntityAt(0))
@@ -31,6 +51,10 @@ const Media = (props) => {
 
   if (type === 'image') {
     media = <Image src={src} />
+  } else if (type === 'video') {
+    media = <Video src={src} />
+  } else if (type === 'audio') {
+    media = <Audio src={src} />
   }
 
   return media

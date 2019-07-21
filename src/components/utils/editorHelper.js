@@ -21,9 +21,21 @@ const INLINE_STYLES = [
 ]
 
 const MEDIA_TYPES = [
-  {label: 'image', symbol: <i className="far fa-image"></i>},
-  {label: 'video', symbol: <i className="fas fa-video"></i>},
-  {label: 'audio', symbol: <i className="fas fa-volume-up"></i>}
+  {
+    label: 'image',
+    symbol: <i className="far fa-file-image"></i>,
+    message: ''
+  },
+  {
+    label: 'video',
+    symbol: <i className="far fa-file-video"></i>,
+    message: 'Only YouTube -links are supported'
+  },
+  {
+    label: 'audio',
+    symbol: <i className="far fa-file-audio"></i>,
+    message: 'Only audio file links are supported'
+  }
 ]
 
 const getBlockStyle = (block) => {

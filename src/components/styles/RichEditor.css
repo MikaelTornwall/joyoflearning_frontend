@@ -60,6 +60,10 @@
   display: inline-block;
 }
 
+.RichEditor-mediaButton {
+  font-size: 1.8rem;
+}
+
 .RichEditor-activeButton {
   color: #5890ff;
 }

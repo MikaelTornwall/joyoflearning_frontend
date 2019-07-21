@@ -14,7 +14,7 @@ export const mediaBlockRenderer = block => {
 }
 
 const Image = (props) => {
-  console.log('Image props: ', props)
+  // console.log('Image props: ', props)
   if (!!props.src) {
     return <img src={props.src} />
   }
@@ -42,7 +42,7 @@ const Audio = (props) => {
 }
 
 const Media = (props) => {
-  console.log('Media props: ',  props)
+  // console.log('Media props: ',  props)
   const entity = props.contentState.getEntity(props.block.getEntityAt(0))
   const { src } = entity.getData()
   const type = entity.getType()

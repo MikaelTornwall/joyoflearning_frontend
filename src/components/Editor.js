@@ -3,12 +3,12 @@ import BlockStyleControls from './BlockStyleControls'
 import InlineStyleControls from './InlineStyleControls'
 import MediaControls from './MediaControls'
 import { Editor, EditorState, RichUtils, AtomicBlockUtils, convertToRaw, convertFromRaw } from 'draft-js'
-import { Button } from 'semantic-ui-react'
+import { Container, Button } from 'semantic-ui-react'
 import Helper from './utils/editorHelper'
 import { mediaBlockRenderer } from "./entities/mediaBlockRenderer"
 import 'draft-js/dist/Draft.css'
 
-const CourseEditor = () => {
+const CourseEditor = ({ onSubmit }) => {
 
   const getEditorData = () => {
     const data = window.localStorage.getItem('contentState')
@@ -32,8 +32,13 @@ const CourseEditor = () => {
     saveEditorData()
   }
 
-  const addMedia = (type) => {
-    const urlValue = window.prompt(`Paste ${type} link:`)
+  const submit = async (event) => {
+    event.preventDefault()
+    onSubmit(convertToRaw(editorState.getCurrentContent()))
+  }
+
+  const addMedia = (type, message) => {
+    const urlValue = window.prompt(`Paste ${type} link: \n${message}`)
     console.log(urlValue)
     if (urlValue === '' || urlValue === null) return
     const contentState = editorState.getCurrentContent()
@@ -89,7 +94,7 @@ const CourseEditor = () => {
   }
 
   return (
-    <div>
+    <Container>
       <div className="RichEditor-root">
       <MediaControls
         onClick={addMedia}
@@ -118,7 +123,8 @@ const CourseEditor = () => {
       </div>
       <Button onClick={logState}>Log state</Button>
       <Button onClick={saveEditorData}>Save</Button>
-    </div>
+      <Button onClick={submit}>Submit</Button>
+    </Container>
   )
 }
 

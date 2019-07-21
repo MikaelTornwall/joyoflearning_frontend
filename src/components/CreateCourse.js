@@ -1,10 +1,12 @@
 import React from 'react'
 import CourseEditor from './Editor'
 
-const CreateCourse = () => {
+const CreateCourse = ({ onSubmit }) => {
 
   return (
-    <CourseEditor />
+    <CourseEditor
+      onSubmit={onSubmit}
+    />
   )
 }
 

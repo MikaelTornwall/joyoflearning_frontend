@@ -7,13 +7,18 @@ const MediaControls = ({ editorState, onClick }) => {
 
   const onButtonClick = (event, type) => {
     event.preventDefault()
-    onClick(type.label)
+    onClick(type.label, type.message)
   }
 
   return (
     <div className="RichEditor-controls">
       {TYPES.MEDIA_TYPES.map(type =>
-        <span key={type.label} className='RichEditor-styleButton' onClick={(event) => onButtonClick(event, type)}>{type.symbol}</span>
+        <span
+          key={type.label}
+          className='RichEditor-styleButton RichEditor-mediaButton'
+          onClick={(event) => onButtonClick(event, type)}>
+          {type.symbol}
+        </span>
       )}
     </div>
   )

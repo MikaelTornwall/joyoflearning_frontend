@@ -7,6 +7,7 @@ import Nav from './components/Nav'
 import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
 import Profile from './components/Profile'
+import Course from './components/Course'
 import CreateCourse from './components/CreateCourse'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
@@ -15,6 +16,7 @@ import ImageForm from './components/ImageForm'
 import userService from './services/users.js'
 import imageService from './services/images.js'
 import loginService from './services/login.js'
+import courseService from './services/courses.js'
 
 // Styles
 import { Container, Image, Header } from 'semantic-ui-react'
@@ -101,7 +103,6 @@ const App = () => {
     await formData.append('password', password)
     await formData.append('organization', organization)
     await formData.append('logo', logo)
-
     await userService.create(formData)
 
     setFirstname('')
@@ -118,6 +119,21 @@ const App = () => {
     const profile = await userService.getUser(id)
     setProfile(profile)
   }
+
+  // Course services
+  const sendCourseToServer = async (data) => {
+    console.log('Data: ', data)
+
+    const course = {
+      title: 'Kurssi1',
+      content: data
+    }
+
+    console.log(course)
+
+    await courseService.create(course, user.token)
+  }
+
 
   const Home = () => (
     <Container>
@@ -170,8 +186,13 @@ const App = () => {
             logo={logo}
           />
         } />
+        <Route path="/mycourses" render={() =>
+          <Course />
+        }
+        />
         <Route path="/createcourse" render={() =>
           <CreateCourse
+            onSubmit={sendCourseToServer}
           />
         } />
       </Router>

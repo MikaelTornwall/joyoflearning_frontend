@@ -52,6 +52,7 @@ const App = () => {
 
   useEffect(() => {
     const profileData = async () => {
+      console.log('UPDATED')
       const loggedUserJSON = window.localStorage.getItem('loggedUser')
       if (loggedUserJSON) {
         const user = JSON.parse(loggedUserJSON)
@@ -119,6 +120,7 @@ const App = () => {
   const getProfile = async (id) => {
     const profile = await userService.getUser(id)
     setProfile(profile)
+    setCourses(profile.courses)
   }
 
   // Course services
@@ -132,12 +134,21 @@ const App = () => {
     console.log('user.token: ', user.token)
     console.log(course)
 
-    await courseService.create(course)
+    const newCourse = await courseService.create(course)
+    let currentCourses = Array.from(courses)    
+    currentCourses = currentCourses.concat(newCourse)
+    setCourses(currentCourses)
   }
 
   const findCourse = async (id) => await courseService.getCourse(id)
 
-  const removeCourse = async (id) => await courseService.remove(id)
+  const removeCourse = async (id) => {
+    let courseArray = courses
+    courseArray = courseArray.filter(course => course.id != id)
+    setCourses(courseArray)
+
+    await courseService.remove(id)
+  }
 
   const Home = () => (
     <Container>
@@ -211,7 +222,7 @@ const App = () => {
 
         <Route exact path="/mycourses" render={() =>
           <MyCourses
-            courses={profile && profile.courses}
+            courses={courses}
             remove={removeCourse}
           />
         } />

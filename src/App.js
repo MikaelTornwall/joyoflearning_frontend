@@ -7,6 +7,7 @@ import Nav from './components/Nav'
 import SignUp from './components/SignUp'
 import LogIn from './components/LogIn'
 import Profile from './components/Profile'
+import MyCourses from './components/MyCourses'
 import Course from './components/Course'
 import CreateCourse from './components/CreateCourse'
 import RenderImage from './components/RenderImage'
@@ -39,6 +40,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [courses, setCourses] = useState([])
 
   useEffect(() => {
     const getImages = async () => {
@@ -54,9 +56,8 @@ const App = () => {
       if (loggedUserJSON) {
         const user = JSON.parse(loggedUserJSON)
         setUser(user)
-        loginService.setToken(user.token)
+        courseService.setToken(user.token)
         await getProfile(user.id)
-        console.log("!!!!!")
       }
     }
     profileData()
@@ -74,7 +75,7 @@ const App = () => {
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
 
-      loginService.setToken(user.token)
+      courseService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -128,12 +129,13 @@ const App = () => {
       title: 'Kurssi1',
       content: data
     }
-
+    console.log('user.token: ', user.token)
     console.log(course)
 
-    await courseService.create(course, user.token)
+    await courseService.create(course)
   }
 
+  const findCourse = async (id) => await courseService.getCourse(id)
 
   const Home = () => (
     <Container>
@@ -186,10 +188,14 @@ const App = () => {
             logo={logo}
           />
         } />
-        <Route path="/mycourses" render={() =>
-          <Course />
-        }
-        />
+        <Route path="/mycourses/:id" render={({ match }) =>
+          <Course id={match.params.id} />
+        } />
+        <Route exact path="/mycourses" render={() =>
+          <MyCourses
+            courses={profile && profile.courses}
+          />
+        } />
         <Route path="/createcourse" render={() =>
           <CreateCourse
             onSubmit={sendCourseToServer}

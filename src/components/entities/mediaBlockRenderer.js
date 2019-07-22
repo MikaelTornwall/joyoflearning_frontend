@@ -31,7 +31,7 @@ const Video = (props) => {
         src = src.replace('youtu.be', 'youtube.com/embed/')
     }
 
-    return <iframe width="806" height="453" src={src} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    return <iframe width="806" height="453" src={src} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
   }
 }
 

@@ -16,6 +16,14 @@ const getUser = async (id) => {
     res.data.logo = logo
   }
 
+  const courses = await getUsersCourses(id)
+
+  res.data.courses = courses  
+  return res.data
+}
+
+const getUsersCourses = async (id) => {
+  const res = await axios.get(`${baseUrl}/${id}/courses`)
   return res.data
 }
 

@@ -26,13 +26,19 @@ const Course = ({ id, editing }) => {
     setTitle(course.title)
   }
 
+  const saveChanges = () => {
+    console.log('saved')
+  }
+
   const Render = () => {
     if (edit) {
       return (
         <Container>
           <Header as="h1">Editing...</Header>
           <CourseEditor
+            onSubmit={saveChanges}
             course={editorState}
+            id={id}
           />
         </Container>
       )

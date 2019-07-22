@@ -1,8 +1,8 @@
 import React from 'react'
-import { Container, List } from 'semantic-ui-react'
+import { Container, List, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-const MyCourses = ({ courses }) => {
+const MyCourses = ({ courses, remove }) => {
 
   console.log('courses: ', courses)
   return (
@@ -12,8 +12,8 @@ const MyCourses = ({ courses }) => {
           <List.Item
             as={Link}
             to={`/mycourses/${course.id}`}
-            key={course.id}>            
-            {course.title}
+            key={course.id}>
+            {course.title} <Button onClick={() => remove(course.id)} size="mini" color="red"><i className="far fa-trash-alt"></i></Button>
             </List.Item>
           )}
         </List>

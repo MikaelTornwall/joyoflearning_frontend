@@ -1,7 +1,7 @@
 import React from 'react'
-import StyleButton from './StyleButton'
-import TYPES from './utils/editorHelper'
-import './styles/RichEditor.css'
+import StyleButton from '../StyleButton'
+import TYPES from '../utils/editorHelper'
+import '../styles/RichEditor.css'
 
 const BlockStyleControls = ({ editorState, onToggle }) => {
 

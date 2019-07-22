@@ -1,14 +1,14 @@
 import React, { useLayoutEffect, useState, useRef } from 'react'
-import BlockStyleControls from './BlockStyleControls'
-import InlineStyleControls from './InlineStyleControls'
-import MediaControls from './MediaControls'
+import BlockStyleControls from './controlComponents/BlockStyleControls'
+import InlineStyleControls from './controlComponents/InlineStyleControls'
+import MediaControls from './controlComponents/MediaControls'
 import { Editor, EditorState, RichUtils, AtomicBlockUtils, convertToRaw, convertFromRaw } from 'draft-js'
 import { Container, Button } from 'semantic-ui-react'
 import Helper from './utils/editorHelper'
 import { mediaBlockRenderer } from "./entities/mediaBlockRenderer"
 import 'draft-js/dist/Draft.css'
 
-const CourseEditor = ({ onSubmit, course }) => {
+const CourseEditor = ({ onSubmit, course, id }) => {
 
   const getEditorData = () => {
     if (course) return course.getCurrentContent()
@@ -47,7 +47,7 @@ const CourseEditor = ({ onSubmit, course }) => {
   }
 
   const addMedia = (type, message) => {
-    const urlValue = window.prompt(`Paste ${type} link: \n${message}`)    
+    const urlValue = window.prompt(`Paste ${type} link: \n${message}`)
     if (urlValue === '' || urlValue === null) return
     const contentState = editorState.getCurrentContent()
     const contentStateWithEntity = contentState.createEntity(
@@ -130,8 +130,7 @@ const CourseEditor = ({ onSubmit, course }) => {
       </div>
       </div>
       <Button onClick={logState}>Log state</Button>
-      <Button onClick={saveEditorData}>Save</Button>
-      <Button onClick={submit}>Submit</Button>
+      <Button onClick={submit}>{course ? 'Save changes' : 'Submit'  }</Button>
     </Container>
   )
 }

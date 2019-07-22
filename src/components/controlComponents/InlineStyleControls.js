@@ -1,7 +1,7 @@
 import React from 'react'
-import StyleButton from './StyleButton'
-import TYPES from './utils/editorHelper'
-import './styles/RichEditor.css'
+import StyleButton from '../StyleButton'
+import TYPES from '../utils/editorHelper'
+import '../styles/RichEditor.css'
 
 const InlineStyleControls = ({ editorState, onToggle }) => {
 
@@ -9,7 +9,7 @@ const InlineStyleControls = ({ editorState, onToggle }) => {
 
   return (
     <div className="RichEditor-controls">
-    {console.log(currentStyle)}    
+    {console.log(currentStyle)}
       {TYPES.INLINE_STYLES.map(type =>
         <StyleButton
           key={type.label}

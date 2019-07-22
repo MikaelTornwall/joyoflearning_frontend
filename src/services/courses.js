@@ -28,4 +28,14 @@ const create = async (courseObject) => {
   return res.data
 }
 
-module.exports = { getAll, getCourse, create, setToken }
+const remove = async (id) => {
+  const config = {
+    headers: { 'Authorization': token }
+  }
+  console.log('delete token: ', token)
+  const res = await axios.delete(`${baseUrl}/${id}`, config)
+  console.log('res data: ', res.data)
+  return res.data
+}
+
+module.exports = { getAll, getCourse, create, remove, setToken }

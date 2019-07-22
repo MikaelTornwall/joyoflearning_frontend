@@ -137,6 +137,8 @@ const App = () => {
 
   const findCourse = async (id) => await courseService.getCourse(id)
 
+  const removeCourse = async (id) => await courseService.remove(id)
+
   const Home = () => (
     <Container>
       <Image src={lecture} fluid />
@@ -210,6 +212,7 @@ const App = () => {
         <Route exact path="/mycourses" render={() =>
           <MyCourses
             courses={profile && profile.courses}
+            remove={removeCourse}
           />
         } />
 

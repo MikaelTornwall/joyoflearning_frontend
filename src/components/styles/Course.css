@@ -1,14 +1,15 @@
 .Course-container {
-  margin: 4rem 0; 
+  padding: 3rem;
+  margin: 1rem 0;
 }
 .Course-title {
   text-align: center;
 }
 
 iframe {
+
 }
 
-img {
-  text-align: center;
-  width: 400px;
+.Course-container img {
+  width: 500px;
 }

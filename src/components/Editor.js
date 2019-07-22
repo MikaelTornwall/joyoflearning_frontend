@@ -8,14 +8,18 @@ import Helper from './utils/editorHelper'
 import { mediaBlockRenderer } from "./entities/mediaBlockRenderer"
 import 'draft-js/dist/Draft.css'
 
-const CourseEditor = ({ onSubmit }) => {
+const CourseEditor = ({ onSubmit, course }) => {
 
   const getEditorData = () => {
-    const data = window.localStorage.getItem('contentState')
-    return data ? JSON.parse(data) : null
+    if (course) return course.getCurrentContent()
+
+    let data = JSON.parse(window.localStorage.getItem('contentState'))
+
+    return data ? convertFromRaw(data) : null
   }
 
-  const [editorState, setEditorState] = useState(getEditorData() ? EditorState.createWithContent(convertFromRaw(getEditorData())) : EditorState.createEmpty())
+  const [editorState, setEditorState] = useState(getEditorData() ? EditorState.createWithContent(getEditorData()) : EditorState.createEmpty())
+
   const refContainer = useRef()
 
   useLayoutEffect(() => {
@@ -23,8 +27,13 @@ const CourseEditor = ({ onSubmit }) => {
   })
 
   const saveEditorData = () => {
-    const data = convertToRaw(editorState.getCurrentContent())
-    window.localStorage.setItem('contentState', JSON.stringify(data))
+    if (!course) {
+      const data = convertToRaw(editorState.getCurrentContent())
+      window.localStorage.setItem('contentState', JSON.stringify(data))
+    } else {
+      const data = convertToRaw(editorState.getCurrentContent())
+      window.localStorage.setItem('editableCourse', JSON.stringify(data))
+    }
   }
 
   const onChange = (editorState) => {
@@ -38,8 +47,7 @@ const CourseEditor = ({ onSubmit }) => {
   }
 
   const addMedia = (type, message) => {
-    const urlValue = window.prompt(`Paste ${type} link: \n${message}`)
-    console.log(urlValue)
+    const urlValue = window.prompt(`Paste ${type} link: \n${message}`)    
     if (urlValue === '' || urlValue === null) return
     const contentState = editorState.getCurrentContent()
     const contentStateWithEntity = contentState.createEntity(

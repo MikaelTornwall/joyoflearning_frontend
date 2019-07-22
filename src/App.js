@@ -155,7 +155,9 @@ const App = () => {
           onClick={({target}) => setPage(target.id)}
           handleLogout={handleLogout}
         />
+
         <Route exact path="/" render={() => <Home />} />
+
         <Route path="/signup" render={() =>
           user
           ? <Redirect to="/" />
@@ -170,6 +172,7 @@ const App = () => {
             logo={[logo, ({target}) => setLogo(target.files[0])]}
           />
         } />
+
         <Route path="/login" render={() =>
           user
           ? <Redirect to="/" />
@@ -182,25 +185,41 @@ const App = () => {
             onSubmit={handleLogin}
            />
         } />
+
         <Route path="/profile" render={() =>
           <Profile
             profile={profile}
             logo={logo}
           />
         } />
-        <Route path="/mycourses/:id" render={({ match }) =>
-          <Course id={match.params.id} />
+
+        <Route exact path="/mycourses/:id" render={({ match }) =>
+          <Course
+            id={match.params.id}
+            editing={false}
+          />
         } />
+
+        <Route exact path="/mycourses/:id/edit" render={({ match }) =>
+          <Course
+            id={match.params.id}
+            editing={true}
+          />
+        } />
+
         <Route exact path="/mycourses" render={() =>
           <MyCourses
             courses={profile && profile.courses}
           />
         } />
+
         <Route path="/createcourse" render={() =>
           <CreateCourse
             onSubmit={sendCourseToServer}
+            course={null}
           />
         } />
+
       </Router>
     </Container>
   )

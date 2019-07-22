@@ -9,8 +9,7 @@ const Nav = ({ user, onClick, handleLogout }) => {
           as={Link} to="/"
           id="home"
           name="home"
-          //onClick={onClick}
-          />
+          onClick={onClick} />
         <Menu.Item
           as={Link} to="/signup"
           id="signup"

@@ -1,13 +1,13 @@
 import React, { useRef } from 'react'
 import { Container, Header, Form, Button } from 'semantic-ui-react'
 
-const SignUp = ({ submit, firstname, lastname, email, username, password, organization, logo }) => {
+const UserSignUp = ({ submit, firstname, lastname, email, username, password, organization, logo }) => {
 
   const ref = useRef(null)
 
   return (
     <Container>
-      <Header as='h1'>Sign up</Header>
+      <Header as='h1'>Sign up to create courses</Header>
         <Form onSubmit={submit}>
           <Form.Group widths="equal">
             <Form.Field>
@@ -59,4 +59,4 @@ const SignUp = ({ submit, firstname, lastname, email, username, password, organi
   )
 }
 
-export default SignUp
+export default UserSignUp

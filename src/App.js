@@ -4,7 +4,8 @@ import { createBrowserHistory } from 'history'
 
 // Components
 import Nav from './components/Nav'
-import SignUp from './components/SignUp'
+import SignUpSelect from './components/SignUpSelect'
+import UserSignUp from './components/UserSignUp'
 import LogIn from './components/LogIn'
 import Profile from './components/Profile'
 import MyCourses from './components/MyCourses'
@@ -78,6 +79,7 @@ const App = () => {
 
       courseService.setToken(user.token)
       setUser(user)
+      await getProfile(user.id)
       setUsername('')
       setPassword('')
     } catch(error) {
@@ -135,7 +137,7 @@ const App = () => {
     console.log(course)
 
     const newCourse = await courseService.create(course)
-    let currentCourses = Array.from(courses)    
+    let currentCourses = Array.from(courses)
     currentCourses = currentCourses.concat(newCourse)
     setCourses(currentCourses)
   }
@@ -171,10 +173,25 @@ const App = () => {
 
         <Route exact path="/" render={() => <Home />} />
 
-        <Route path="/signup" render={() =>
+        <Route exact path="/signup" render={() =>
           user
           ? <Redirect to="/" />
-          : <SignUp
+          : <SignUpSelect
+            submit={submit}
+            firstname={[firstname, ({target}) => setFirstname(target.value)]}
+            lastname={[lastname, ({target}) => setLastname(target.value)]}
+            email={[email, ({target}) => setEmail(target.value)]}
+            username={[username, ({target}) => setUsername(target.value)]}
+            password={[password, ({target}) => setPassword(target.value)]}
+            organization={[organization, ({target}) => setOrganization(target.value)]}
+            logo={[logo, ({target}) => setLogo(target.files[0])]}
+          />
+        } />
+
+        <Route exact path="/signup/user" render={() =>
+          user
+          ? <Redirect to="/" />
+          : <UserSignUp
             submit={submit}
             firstname={[firstname, ({target}) => setFirstname(target.value)]}
             lastname={[lastname, ({target}) => setLastname(target.value)]}

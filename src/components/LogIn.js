@@ -10,12 +10,10 @@ const Login = ({ errorMessage, username, password, setUsername, setPassword, onS
         header={errorMessage}
       />
       <Form.Field inline>
-        <label>Username</label>
-        <input type="text" name="username" value={username} onChange={setUsername} />
+        <Form.Input icon='user' iconPosition='left' label="Username" type="text" name="username" value={username} onChange={setUsername} />
       </Form.Field>
       <Form.Field inline>
-        <label>Password</label>
-        <input type="password" name="password" value={password} onChange={setPassword} />
+        <Form.Input icon='lock' iconPosition='left' label="Password" type="password" name="password" value={password} onChange={setPassword} />
       </Form.Field>
       <Button type="submit" color="green">Log In</Button>
     </Form>

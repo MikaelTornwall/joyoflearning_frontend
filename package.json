@@ -12,9 +12,12 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "0.9.x",
+    "redux": "^4.0.4",
     "semantic-ui-react": "^0.87.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "deep-freeze": "0.0.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

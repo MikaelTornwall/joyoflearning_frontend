@@ -1,15 +1,13 @@
 import React from 'react'
 import { Container, List, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-const MyCourses = ({ courses, remove }) => {
-
-  console.log('courses: ', courses)
-  console.log('courses type: ', typeof courses)
+const MyCourses = (props, { remove }) => {
   return (
     <Container>
       <List>
-        {courses && typeof courses == 'object' && courses.map(course =>
+        {props.user && props.user.courses.map(course =>
           <div key={course.id}>
           <List.Item
             as={Link}
@@ -24,4 +22,12 @@ const MyCourses = ({ courses, remove }) => {
   )
 }
 
-export default MyCourses
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+const ConnectedMyCourses = connect(mapStateToProps)(MyCourses)
+
+export default ConnectedMyCourses

@@ -9,7 +9,7 @@ const userReducer = (state = null, action) => {
     }
 }
 
-export const assignUser = (user) => {
+export const assignUser = user => {
   return {
     type: 'ASSIGN_USER',
     user

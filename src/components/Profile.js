@@ -12,7 +12,7 @@ const newUser = {
 const Profile = (props) => (
   <Container>
   {console.log('Profile: ', props.user)}
-    <Header as='h2'>{props.user.username}</Header>
+    <Header as='h2'>{props.user && props.user.username}</Header>
     {/*<Image  src={profile && profile.logo.image.path} width="400" height="auto" alt="From the database" />*/}
     <button onClick={() => props.assignUser(newUser)}>Switch</button>
   </Container>

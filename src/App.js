@@ -44,27 +44,19 @@ const App = (props) => {
   const [password, setPassword] = useState('')
   const [organization, setOrganization] = useState('')
   const [logo, setLogo] = useState(null)
-  const [user, setUser] = useState(null)
-  const [profile, setProfile] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
     props.initImages()
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      props.assignUser(user)
+      courseService.setToken(props.user && props.user.token)
+    }
   }, [])
 
-  useEffect(() => {
-    const profileData = async () => {
-      const loggedUserJSON = window.localStorage.getItem('loggedUser')
-      if (loggedUserJSON) {
-        const user = JSON.parse(loggedUserJSON)
-        props.assignUser(user)
-        courseService.setToken(user.token)
-        await getProfile(user.id)
-      }
-    }
-    profileData()
-  }, [])
 
   // Login/logout functions
   const handleLogin = async (event) => {
@@ -78,9 +70,8 @@ const App = (props) => {
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
 
-      courseService.setToken(user.token)
+      courseService.setToken(props.user && props.user.token)
       props.assignUser(user)
-      await getProfile(user.id)
       setUsername('')
       setPassword('')
     } catch(error) {
@@ -112,13 +103,6 @@ const App = (props) => {
     setPassword('')
     setOrganization('')
     setLogo(null)
-  }
-
-  // Profile services
-  const getProfile = async (id) => {
-    const profile = await userService.getUser(id)
-    setProfile(profile)
-    setCourses(profile.courses)
   }
 
   // Course services
@@ -204,10 +188,7 @@ const App = (props) => {
         } />
 
         <Route path="/profile" render={() =>
-          <Profile
-            profile={profile}
-            logo={logo}
-          />
+          <Profile />
         } />
 
         <Route exact path="/mycourses/:id" render={({ match }) =>

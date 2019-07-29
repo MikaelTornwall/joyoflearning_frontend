@@ -1,10 +1,14 @@
 import axios from 'axios'
+import imageService from '../services/images'
+import userService from '../services/users'
 
 const baseUrl = 'http://localhost:3001/api/users/login'
 
 const login = async (credentials) => {
   const res = await axios.post(baseUrl, credentials)
-  return res.data
+  const user = await userService.getUser(res.data.id)
+
+  return user
 }
 
 export default { login }

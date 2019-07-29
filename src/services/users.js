@@ -9,6 +9,7 @@ const getAll = async () => {
 }
 
 const getUsersCourses = async (id) => {
+  console.log('i got this: ', id)
   const res = await axios.get(`${baseUrl}/${id}/courses`)
   return res.data
 }
@@ -32,4 +33,4 @@ const create = async (userObject) => {
     return res.data
 }
 
-export default { getAll, getUser, create }
+export default { getAll, getUser, create, getUsersCourses }

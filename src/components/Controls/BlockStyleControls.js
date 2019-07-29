@@ -1,6 +1,7 @@
 import React from 'react'
 import StyleButton from '../StyleButton'
 import TYPES from '../utils/editorHelper'
+import { Container } from 'semantic-ui-react'
 import '../styles/RichEditor.css'
 
 const BlockStyleControls = ({ editorState, onToggle }) => {
@@ -12,8 +13,7 @@ const BlockStyleControls = ({ editorState, onToggle }) => {
     .getType()
 
   return (
-    <div className="RichEditor-controls">
-    {console.log(TYPES.BLOCK_TYPES)}
+    <Container className="RichEditor-controls">    
       {TYPES.BLOCK_TYPES.map(type =>
         <StyleButton
           key={type.label}
@@ -23,7 +23,7 @@ const BlockStyleControls = ({ editorState, onToggle }) => {
           style={type.style}
         />
       )}
-    </div>
+    </Container>
   )
 }
 

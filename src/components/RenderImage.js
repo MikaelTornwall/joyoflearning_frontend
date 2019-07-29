@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 const RenderImage = (props) => {
     return (
       <div>
-        {console.log(props.images)}
         <p>Images</p>
         {props.images.map(data => (
           <img key={data.id} src={data.image.path} width="400" height="auto" alt="From the database" />
@@ -19,6 +18,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedRenderImage = connect(mapStateToProps, null)(RenderImage)
+const ConnectedRenderImage = connect(mapStateToProps)(RenderImage)
 
 export default ConnectedRenderImage

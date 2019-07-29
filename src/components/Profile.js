@@ -6,7 +6,7 @@ import { assignUser } from '../reducers/userReducer'
 const newUser = {
   username: "Simo",
   id: "11111",
-  role: "Admin"
+  role: "Student"
 }
 
 const Profile = (props) => (

@@ -1,6 +1,6 @@
 import React from 'react'
-import StyleButton from '../StyleButton'
 import TYPES from '../utils/editorHelper'
+import { Container } from 'semantic-ui-react'
 import '../styles/RichEditor.css'
 
 const MediaControls = ({ editorState, onClick }) => {
@@ -11,7 +11,7 @@ const MediaControls = ({ editorState, onClick }) => {
   }
 
   return (
-    <div className="RichEditor-controls">
+    <Container className="RichEditor-controls">
       {TYPES.MEDIA_TYPES.map(type =>
         <span
           key={type.label}
@@ -20,7 +20,7 @@ const MediaControls = ({ editorState, onClick }) => {
           {type.symbol}
         </span>
       )}
-    </div>
+    </Container>
   )
 }
 

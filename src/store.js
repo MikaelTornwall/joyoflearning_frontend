@@ -13,12 +13,4 @@ const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
 store.subscribe(() => console.log(store.getState()))
 
-const user = {
-  username: "Testimies",
-  id: "12345",
-  role: "Admin"
-}
-
-store.dispatch(assignUser(user))
-
 export default store

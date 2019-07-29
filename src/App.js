@@ -18,7 +18,7 @@ import ImageForm from './components/ImageForm'
 import { connect } from 'react-redux'
 
 // Reducers
-import userReducer from './reducers/userReducer'
+import userReducer, { assignUser, logout } from './reducers/userReducer'
 import imageReducer, { initImages } from './reducers/imageReducer'
 
 // Services
@@ -37,9 +37,6 @@ const history = createBrowserHistory()
 
 const App = (props) => {
 
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [images, setImages] = useState([])
-  const [page, setPage] = useState('home')
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
@@ -53,21 +50,15 @@ const App = (props) => {
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
-    const getImages = async () => {
-      const images = await imageService.getAll()
-      setImages(images)
-      props.initImages()
-    }
-    getImages()
+    props.initImages()
   }, [])
 
   useEffect(() => {
     const profileData = async () => {
-      console.log('UPDATED')
       const loggedUserJSON = window.localStorage.getItem('loggedUser')
       if (loggedUserJSON) {
         const user = JSON.parse(loggedUserJSON)
-        setUser(user)
+        props.assignUser(user)
         courseService.setToken(user.token)
         await getProfile(user.id)
       }
@@ -88,7 +79,7 @@ const App = (props) => {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
 
       courseService.setToken(user.token)
-      setUser(user)
+      props.assignUser(user)
       await getProfile(user.id)
       setUsername('')
       setPassword('')
@@ -98,11 +89,6 @@ const App = (props) => {
         setErrorMessage(null)
       }, 5000)
     }
-  }
-
-  const handleLogout = () => {
-    setUser(null)
-    window.localStorage.removeItem('loggedUser')
   }
 
   // Signup functions
@@ -143,8 +129,6 @@ const App = (props) => {
       title: 'Kurssi1',
       content: data
     }
-    console.log('user.token: ', user.token)
-    console.log(course)
 
     const newCourse = await courseService.create(course)
     let currentCourses = Array.from(courses)
@@ -173,16 +157,11 @@ const App = (props) => {
   return (
     <Container className="App">
       <Router history={history}>
-        <Nav
-          user={user}
-          onClick={({target}) => setPage(target.id)}
-          handleLogout={handleLogout}
-        />
-
+        <Nav />
         <Route exact path="/" render={() => <Home />} />
 
         <Route exact path="/signup" render={() =>
-          user
+          props.user
           ? <Redirect to="/" />
           : <SignUpSelect
             submit={submit}
@@ -197,7 +176,7 @@ const App = (props) => {
         } />
 
         <Route exact path="/signup/user" render={() =>
-          user
+          props.user
           ? <Redirect to="/" />
           : <UserSignUp
             submit={submit}
@@ -212,7 +191,7 @@ const App = (props) => {
         } />
 
         <Route path="/login" render={() =>
-          user
+          props.user
           ? <Redirect to="/" />
           : <LogIn
             errorMessage={errorMessage}
@@ -264,10 +243,18 @@ const App = (props) => {
   )
 }
 
-const mapDispatchToProps = {
-  initImages
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
 }
 
-const ConnectedApp = connect(null, mapDispatchToProps)(App)
+const mapDispatchToProps = {
+  initImages,
+  assignUser,
+  logout
+}
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
 export default ConnectedApp

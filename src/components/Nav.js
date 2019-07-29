@@ -1,29 +1,24 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { logout } from '../reducers/userReducer'
 
-const Nav = ({ user, onClick, handleLogout }) => {
-
-  console.log('User: ', user)
+const Nav = (props) => {
   const NotLoggedNav = () => (
       <Menu secondary>
         <Menu.Item
           as={Link} to="/"
           id="home"
-          name="home"
-          onClick={onClick} />
+          name="home" />
         <Menu.Item
           as={Link} to="/signup"
           id="signup"
-          name="sign up"
-          onClick={onClick}
-        />
+          name="sign up" />
         <Menu.Item
           as={Link} to="/login"
           id="login"
-          name="log in"
-          onClick={onClick}
-        />
+          name="log in" />
       </Menu>
     )
 
@@ -32,33 +27,28 @@ const Nav = ({ user, onClick, handleLogout }) => {
         <Menu.Item
           as={Link} to="/"
           id="home"
-          name="home"
-          onClick={onClick} />
+          name="home" />
         <Menu.Item
           as={Link} to="/profile"
           id="profile"
-          name="profile"
-          onClick={onClick} />
+          name="profile" />
         <Menu.Item
           as={Link} to="/mycourses"
           id="mycourses"
-          name="my courses"
-          onClick={onClick} />
+          name="my courses" />
         <Menu.Item
           as={Link} to="/createcourse"
           id="newcourse"
-          name="new course"
-          onClick={onClick} />
+          name="new course" />
         <Menu.Item
           as={Link} to="/settings"
           id="settings"
-          name="settings"
-          onClick={onClick} />
+          name="settings" />
         <Menu.Item
           as={Link} to="/login"
           id="logout"
           name="logout"
-          onClick={handleLogout} />
+          onClick={() => props.logout()} />
       </Menu>
     )
 
@@ -67,37 +57,33 @@ const Nav = ({ user, onClick, handleLogout }) => {
         <Menu.Item
           as={Link} to="/"
           id="home"
-          name="home"
-          onClick={onClick} />
+          name="home" />
         <Menu.Item
           as={Link} to="/profile"
           id="profile"
-          name="profile"
-          onClick={onClick} />
+          name="profile" />
         <Menu.Item
           as={Link} to="/mycourses"
           id="mycourses"
-          name="my courses"
-          onClick={onClick} />
+          name="my courses" />
         <Menu.Item
           as={Link} to="/settings"
           id="settings"
-          name="settings"
-          onClick={onClick} />
+          name="settings" />
         <Menu.Item
           as={Link} to="/login"
           id="logout"
           name="logout"
-          onClick={handleLogout} />
+          onClick={() => props.logout()} />
       </Menu>
     )
 
     const nav = () => {
-      if (!user) {
+      if (!props.user) {
         return <NotLoggedNav />
-      } else if (user.role === "Admin") {
+      } else if (props.user.role === "Admin") {
         return <AdminNav />
-      } else if (user.role === "Student") {
+      } else if (props.user.role === "Student") {
         return <StudentNav />
       }
     }
@@ -105,4 +91,16 @@ const Nav = ({ user, onClick, handleLogout }) => {
     return nav()
 }
 
-export default Nav
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = {
+  logout
+}
+
+const ConnectedNav = connect(mapStateToProps, mapDispatchToProps)(Nav)
+
+export default ConnectedNav

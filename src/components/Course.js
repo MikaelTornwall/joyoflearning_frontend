@@ -1,9 +1,8 @@
-import React, { useLayoutEffect, useState, useRef } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import CourseEditor from './Editor'
-import { Editor, EditorState, RichUtils, AtomicBlockUtils, convertToRaw, convertFromRaw } from 'draft-js'
+import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { Container, Button, Header } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import Helper from './utils/editorHelper'
 import { mediaBlockRenderer } from "./entities/mediaBlockRenderer"
 import courseService from '../services/courses.js'
 import 'draft-js/dist/Draft.css'
@@ -15,16 +14,16 @@ const Course = ({ id, editing }) => {
   const [title, setTitle] = useState('')
   const [edit, setEdit] = useState(editing)
 
-  useLayoutEffect(() => {
-    getCourse()
-  }, [])
-
   const getCourse = async () => {
     const course = await courseService.getCourse(id)
     const content = convertFromRaw(course.content)
     setEditorState(EditorState.createWithContent(content))
     setTitle(course.title)
   }
+  
+  useLayoutEffect(() => {
+    getCourse()
+  }, [])
 
   const saveChanges = () => {
     console.log('saved')

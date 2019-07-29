@@ -9,8 +9,6 @@ import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import store from './store'
 
-
-
 const renderApp = () => {
   ReactDOM.render(
     <Provider store={store}>

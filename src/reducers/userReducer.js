@@ -1,11 +1,9 @@
-const userReducer = (state = [], action) => {
-  console.log('Reducer state: ', state)
-  console.log('Reducer action: ', action)
+const userReducer = (state = null, action) => {
   switch(action.type) {
     case 'ASSIGN_USER':
-      state = action.user
-      console.log('New state: ', state)
-      return state
+      return action.user
+    case 'LOGOUT':
+      return action.user
     default:
       return state
     }
@@ -15,6 +13,15 @@ export const assignUser = (user) => {
   return {
     type: 'ASSIGN_USER',
     user
+  }
+}
+
+export const logout = () => {
+  console.log("IT'S WORKING!")
+  window.localStorage.removeItem('loggedUser')
+  return {
+    type: 'LOGOUT',
+    user: null
   }
 }
 

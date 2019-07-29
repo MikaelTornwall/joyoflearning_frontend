@@ -8,6 +8,11 @@ const getAll = async () => {
     return res.data
 }
 
+const getUsersCourses = async (id) => {
+  const res = await axios.get(`${baseUrl}/${id}/courses`)
+  return res.data
+}
+
 const getUser = async (id) => {
   const res = await axios.get(`${baseUrl}/${id}`)
 
@@ -18,12 +23,7 @@ const getUser = async (id) => {
 
   const courses = await getUsersCourses(id)
 
-  res.data.courses = courses  
-  return res.data
-}
-
-const getUsersCourses = async (id) => {
-  const res = await axios.get(`${baseUrl}/${id}/courses`)
+  res.data.courses = courses
   return res.data
 }
 

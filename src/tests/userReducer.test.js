@@ -1,7 +1,7 @@
-import userSignupReducer from '../reducers/userSignupReducer'
+import userReducer from '../reducers/userReducer'
 import deepFreeze from 'deep-freeze'
 
-describe('userSignupReducer', () => {
+describe('userReducer', () => {
   test('returns new state with action ASSIGN_USER', () => {
     const state = {}
     const action = {
@@ -14,7 +14,7 @@ describe('userSignupReducer', () => {
     }
 
     deepFreeze(state)
-    const newState = userSignupReducer.userSignupReducer(state, action)
+    const newState = userReducer.userReducer(state, action)
     console.log('newState: ', newState)
 
     expect(newState).toBe(action.data)
@@ -32,7 +32,7 @@ describe('userSignupReducer', () => {
     }
 
     deepFreeze(state)
-    const newState = userSignupReducer.userSignupReducer(state, action)
+    const newState = userReducer.userReducer(state, action)
 
     const updatedAction = {
       type: 'ASSIGN_USER',
@@ -44,7 +44,7 @@ describe('userSignupReducer', () => {
     }
 
     deepFreeze(newState)
-    const updatedState = userSignupReducer.userSignupReducer(newState, updatedAction)
+    const updatedState = userReducer.userReducer(newState, updatedAction)
 
     expect(updatedState).toBe(updatedAction.data)
   })

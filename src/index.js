@@ -2,26 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import './index.css'
-import userReducer from './reducers/userSignupReducer'
-import { createStore } from 'redux'
+import userReducer, { assignUser } from './reducers/userReducer'
+import imageReducer, { initImages } from './reducers/imageReducer'
+import imageService from './services/images'
+import { createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import store from './store'
 
-const store = createStore(userReducer.userSignupReducer)
 
-store.dispatch({
-  type: 'ASSIGN_USER',
-  data: {
-    username: 'Testi',
-    id: "123",
-    role: 'Admin'
-  }
-})
 
 const renderApp = () => {
   ReactDOM.render(
-    <div>
-    {store.getState().username}
-    <App />
-    </div>,
+    <Provider store={store}>
+      <App />
+    </Provider>,
     document.getElementById('root')
   )
 }

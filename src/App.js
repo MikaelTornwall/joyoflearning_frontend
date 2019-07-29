@@ -14,6 +14,13 @@ import CreateCourse from './components/CreateCourse'
 import RenderImage from './components/RenderImage'
 import ImageForm from './components/ImageForm'
 
+// Redux
+import { connect } from 'react-redux'
+
+// Reducers
+import userReducer from './reducers/userReducer'
+import imageReducer, { initImages } from './reducers/imageReducer'
+
 // Services
 import userService from './services/users.js'
 import imageService from './services/images.js'
@@ -22,11 +29,13 @@ import courseService from './services/courses.js'
 
 // Styles
 import { Container, Image, Header } from 'semantic-ui-react'
+
+// Routes
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 const history = createBrowserHistory()
 
-const App = () => {
+const App = (props) => {
 
   const [loggedIn, setLoggedIn] = useState(false)
   const [images, setImages] = useState([])
@@ -47,6 +56,7 @@ const App = () => {
     const getImages = async () => {
       const images = await imageService.getAll()
       setImages(images)
+      props.initImages()
     }
     getImages()
   }, [])
@@ -156,9 +166,7 @@ const App = () => {
     <Container>
       <Image src={lecture} fluid />
       <Header as='h1'>Welcome to Joy of Learning</Header>
-      <RenderImage
-        images={images}
-      />
+      <RenderImage />
     </Container>
   )
 
@@ -256,4 +264,10 @@ const App = () => {
   )
 }
 
-export default App
+const mapDispatchToProps = {
+  initImages
+}
+
+const ConnectedApp = connect(null, mapDispatchToProps)(App)
+
+export default ConnectedApp

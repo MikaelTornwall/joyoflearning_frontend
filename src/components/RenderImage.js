@@ -1,18 +1,24 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-class RenderImage extends React.Component {
-  render() {
-
+const RenderImage = (props) => {
     return (
       <div>
-        {console.log(this.props.images)}
+        {console.log(props.images)}
         <p>Images</p>
-        {this.props.images.map(data => (
+        {props.images.map(data => (
           <img key={data.id} src={data.image.path} width="400" height="auto" alt="From the database" />
         ))}
       </div>
     )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    images: state.images
   }
 }
 
-export default RenderImage
+const ConnectedRenderImage = connect(mapStateToProps, null)(RenderImage)
+
+export default ConnectedRenderImage

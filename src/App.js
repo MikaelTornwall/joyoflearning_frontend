@@ -51,16 +51,16 @@ const App = (props) => {
 
   useEffect(() => {
     props.initImages()
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    const tokenJSON = window.localStorage.getItem('token')
-    const initUser = async () => {
-      if (loggedUserJSON) {
-        const loggedUser = JSON.parse(loggedUserJSON)
-        await props.assignUser(loggedUser.id)
-      }
-      if (tokenJSON) courseService.setToken(JSON.parse(tokenJSON))
-    }
-    initUser()
+  })
+
+  useEffect(() => {
+    const loggedUserString = window.localStorage.getItem('loggedUser')
+    if (loggedUserString) props.assignUser(JSON.parse(loggedUserString).id)
+  }, [])
+
+  useEffect(() => {
+    const tokenString = window.localStorage.getItem('token')
+    if (tokenString) courseService.setToken(JSON.parse(tokenString))
   }, [])
 
 
@@ -78,7 +78,7 @@ const App = (props) => {
       const loggedUser = await loginService.login({
         username, password
       })
-      
+
       console.log ('TOKEN: ', loggedUser.token)
       window.localStorage.setItem('token', JSON.stringify(loggedUser.token))
       courseService.setToken(loggedUser.token)
@@ -133,15 +133,7 @@ const App = (props) => {
 
   const findCourse = async (id) => await courseService.getCourse(id)
 
-  const removeCourse = async (id) => {
-    //let courseArray = user.courses
-    //courseArray = Array.from(courseArray.filter(course => course.id != id))
-    // setCourses(user, courseArray)
-    console.log('id: ', id)
-    console.log('userId: ', user.id)
-    props.removeCourse(id, user.id)
-    //await courseService.remove(id)
-  }
+  const removeCourse = async (id) => props.removeCourse(id, user.id)  
 
   const Home = () => (
     <Container>

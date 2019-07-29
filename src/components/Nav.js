@@ -78,7 +78,7 @@ const Nav = (props) => {
       </Menu>
     )
 
-    const nav = () => {
+    const Nav = () => {
       if (!props.user) {
         return <NotLoggedNav />
       } else if (props.user.role === "Admin") {
@@ -88,7 +88,7 @@ const Nav = (props) => {
       }
     }
 
-    return nav()
+    return <Nav />
 }
 
 const mapStateToProps = (state) => {

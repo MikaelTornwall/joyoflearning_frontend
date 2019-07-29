@@ -18,8 +18,9 @@ import ImageForm from './components/ImageForm'
 import { connect } from 'react-redux'
 
 // Reducers
-import userReducer, { assignUser, logout } from './reducers/userReducer'
+import userReducer, { assignUser, logout, removeCourse } from './reducers/userReducer'
 import imageReducer, { initImages } from './reducers/imageReducer'
+import messageReducer, { setErrorMessage } from './reducers/messageReducer'
 
 // Services
 import userService from './services/users.js'
@@ -44,40 +45,50 @@ const App = (props) => {
   const [password, setPassword] = useState('')
   const [organization, setOrganization] = useState('')
   const [logo, setLogo] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const [courses, setCourses] = useState([])
+
+  const { user } = props
 
   useEffect(() => {
     props.initImages()
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      props.assignUser(user)
-      courseService.setToken(props.user && props.user.token)
+    const tokenJSON = window.localStorage.getItem('token')
+    const initUser = async () => {
+      if (loggedUserJSON) {
+        const loggedUser = JSON.parse(loggedUserJSON)
+        await props.assignUser(loggedUser.id)
+      }
+      if (tokenJSON) courseService.setToken(JSON.parse(tokenJSON))
     }
+    initUser()
   }, [])
 
 
   // Login/logout functions
+
+  const loggaIn = async (event) => {
+    console.log('HELLOO!')
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log("Logging in with username ",  username, " and password ", password)
 
     try {
-      const user = await loginService.login({
+      const loggedUser = await loginService.login({
         username, password
       })
-
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
-
-      courseService.setToken(props.user && props.user.token)
-      props.assignUser(user)
+      
+      console.log ('TOKEN: ', loggedUser.token)
+      window.localStorage.setItem('token', JSON.stringify(loggedUser.token))
+      courseService.setToken(loggedUser.token)
+      props.assignUser(loggedUser.id)
       setUsername('')
       setPassword('')
     } catch(error) {
-      setErrorMessage('Incorrect username or password')
+      props.setErrorMessage('Incorrect username or password')
       setTimeout(() => {
-        setErrorMessage(null)
+        props.setErrorMessage(null)
       }, 5000)
     }
   }
@@ -123,11 +134,13 @@ const App = (props) => {
   const findCourse = async (id) => await courseService.getCourse(id)
 
   const removeCourse = async (id) => {
-    let courseArray = courses
-    courseArray = courseArray.filter(course => course.id != id)
-    setCourses(courseArray)
-
-    await courseService.remove(id)
+    //let courseArray = user.courses
+    //courseArray = Array.from(courseArray.filter(course => course.id != id))
+    // setCourses(user, courseArray)
+    console.log('id: ', id)
+    console.log('userId: ', user.id)
+    props.removeCourse(id, user.id)
+    //await courseService.remove(id)
   }
 
   const Home = () => (
@@ -145,7 +158,7 @@ const App = (props) => {
         <Route exact path="/" render={() => <Home />} />
 
         <Route exact path="/signup" render={() =>
-          props.user
+          user
           ? <Redirect to="/" />
           : <SignUpSelect
             submit={submit}
@@ -160,7 +173,7 @@ const App = (props) => {
         } />
 
         <Route exact path="/signup/user" render={() =>
-          props.user
+          user
           ? <Redirect to="/" />
           : <UserSignUp
             submit={submit}
@@ -175,10 +188,9 @@ const App = (props) => {
         } />
 
         <Route path="/login" render={() =>
-          props.user
+          user
           ? <Redirect to="/" />
           : <LogIn
-            errorMessage={errorMessage}
             username={username}
             password={password}
             setUsername={({target}) => setUsername(target.value)}
@@ -233,7 +245,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   initImages,
   assignUser,
-  logout
+  logout,
+  removeCourse,
+  setErrorMessage
 }
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)

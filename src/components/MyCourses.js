@@ -3,18 +3,19 @@ import { Container, List, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-const MyCourses = (props, { remove }) => {
+const MyCourses = (props ) => {
+  const { user } = props
   return (
     <Container>
       <List>
-        {props.user && props.user.courses.map(course =>
+        {user && user.courses.map(course =>
           <div key={course.id}>
           <List.Item
             as={Link}
             to={`/mycourses/${course.id}`}>
             {course.title}
             </List.Item>
-            <Button onClick={() => remove(course.id)} size="mini" color="red"><i className="far fa-trash-alt"></i></Button>
+            <Button onClick={() => props.remove(course.id)} size="mini" color="red"><i className="far fa-trash-alt"></i></Button>
             </div>
           )}
         </List>

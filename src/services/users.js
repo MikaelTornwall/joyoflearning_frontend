@@ -8,23 +8,13 @@ const getAll = async () => {
     return res.data
 }
 
-const getUsersCourses = async (id) => {
-  console.log('i got this: ', id)
+const getUsersCourses = async (id) => {  
   const res = await axios.get(`${baseUrl}/${id}/courses`)
   return res.data
 }
 
 const getUser = async (id) => {
   const res = await axios.get(`${baseUrl}/${id}`)
-
-  if (res.data.logo) {
-    const logo = await imageService.getOne(res.data.logo)
-    res.data.logo = logo
-  }
-
-  const courses = await getUsersCourses(id)
-
-  res.data.courses = courses
   return res.data
 }
 

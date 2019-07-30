@@ -14,7 +14,7 @@ const MyCourses = (props ) => {
           <Table.HeaderCell>Students</Table.HeaderCell>
           <Table.HeaderCell>Status</Table.HeaderCell>
           <Table.HeaderCell>Change status</Table.HeaderCell>
-          <Table.HeaderCell>Delete</Table.HeaderCell>
+          <Table.HeaderCell></Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

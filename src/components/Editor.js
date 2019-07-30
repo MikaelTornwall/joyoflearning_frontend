@@ -130,7 +130,8 @@ const CourseEditor = ({ onSubmit, course, id }) => {
       </div>
       </div>
       <Button onClick={logState}>Log state</Button>
-      <Button onClick={submit}>{course ? 'Save changes' : 'Submit'  }</Button>
+      <Button onClick={submit}>{course ? 'Save changes' : 'Save as a draft'  }</Button>
+      <Button>Publish</Button>
     </Container>
   )
 }

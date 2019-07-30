@@ -13,14 +13,16 @@ const Course = ({ id, editing }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [title, setTitle] = useState('')
   const [edit, setEdit] = useState(editing)
+  const [course, setCourse] = useState(null)
 
   const getCourse = async () => {
     const course = await courseService.getCourse(id)
+    setCourse(course)
     const content = convertFromRaw(course.content)
     setEditorState(EditorState.createWithContent(content))
     setTitle(course.title)
   }
-  
+
   useLayoutEffect(() => {
     getCourse()
   }, [])
@@ -54,6 +56,9 @@ const Course = ({ id, editing }) => {
         as={Link}
         to={`/mycourses/${id}/edit`}
         onClick={() => setEdit(true)}>Edit</Button>
+        <Button>
+        {course && course.active ? 'Unpublish' : 'Publish'}
+        </Button>
         </Container>
       )
     }

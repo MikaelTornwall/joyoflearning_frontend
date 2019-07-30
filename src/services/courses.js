@@ -28,6 +28,18 @@ const create = async (courseObject) => {
   return res.data
 }
 
+const activate = async (course) => {
+  const id = course.id
+  const res = await axios.put(`${baseUrl}/${id}`, { ...course, active: true })
+  return res.data
+}
+
+const deactivate = async (course) => {
+  const id = course.id
+  const res = await axios.put(`${baseUrl}/${id}`, { ...course, active: false })
+  return res.data
+}
+
 const remove = async (id) => {
   const config = {
     headers: { 'Authorization': token }
@@ -38,4 +50,4 @@ const remove = async (id) => {
   return res.data
 }
 
-module.exports = { getAll, getCourse, create, remove, setToken }
+module.exports = { getAll, getCourse, create, activate, deactivate, remove, setToken }

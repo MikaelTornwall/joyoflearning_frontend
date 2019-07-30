@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history'
 import Nav from './components/Nav'
 import SignUpSelect from './components/SignUpSelect'
 import UserSignUp from './components/UserSignUp'
+import StudentSignUp from './components/StudentSignUp'
 import LogIn from './components/LogIn'
 import Profile from './components/Profile'
 import MyCourses from './components/MyCourses'
@@ -133,7 +134,7 @@ const App = (props) => {
 
   const findCourse = async (id) => await courseService.getCourse(id)
 
-  const removeCourse = async (id) => props.removeCourse(id, user.id)  
+  const removeCourse = async (id) => props.removeCourse(id, user.id)
 
   const Home = () => (
     <Container>
@@ -176,6 +177,17 @@ const App = (props) => {
             password={[password, ({target}) => setPassword(target.value)]}
             organization={[organization, ({target}) => setOrganization(target.value)]}
             logo={[logo, ({target}) => setLogo(target.files[0])]}
+          />
+        } />
+
+        <Route exact path="/signup/student" render={() =>
+          user
+          ? <Redirect to="/" />
+          : <StudentSignUp
+            submit={submit}
+            email={[email, ({target}) => setEmail(target.value)]}
+            username={[username, ({target}) => setUsername(target.value)]}
+            password={[password, ({target}) => setPassword(target.value)]}
           />
         } />
 
